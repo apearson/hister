@@ -78,6 +78,7 @@ func exit(errno int, msg string) {
 func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "config.yml", "config file (default paths: ./config.yml or $HOME/.histerrc or $HOME/.config/hister/config.yml)")
 	rootCmd.PersistentFlags().StringP("log-level", "l", "info", "set log level (possible options: error, warning, info, debug, trace)")
+	rootCmd.PersistentFlags().StringP("search-url", "s", "https://google.com/search?q={query}", "set default search engine url")
 
 	rootCmd.AddCommand(listenCmd)
 	rootCmd.AddCommand(createConfigCmd)
@@ -119,10 +120,13 @@ func initConfig() {
 	var err error
 	cfg, err = config.Load(cfgFile)
 	if err != nil {
-		exit(1, "Failed to initialize config:"+err.Error())
+		exit(1, "Failed to initialize config: "+err.Error())
 	}
-	if l, _ := rootCmd.PersistentFlags().GetString("log-level"); l != "" && (rootCmd.Flags().Changed("log-level") || cfg.App.LogLevel == "") {
-		cfg.App.LogLevel = l
+	if v, _ := rootCmd.PersistentFlags().GetString("log-level"); v != "" && (rootCmd.Flags().Changed("log-level") || cfg.App.LogLevel == "") {
+		cfg.App.LogLevel = v
+	}
+	if v, _ := rootCmd.PersistentFlags().GetString("search-url"); v != "" && (rootCmd.Flags().Changed("log-level") || cfg.App.SearchURL == "") {
+		cfg.App.SearchURL = v
 	}
 }
 

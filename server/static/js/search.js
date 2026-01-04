@@ -90,8 +90,7 @@ window.addEventListener("keydown", function(e) {
           results.children[highlightIdx].classList.add("highlight");
     }
     if(e.ctrlKey && e.key == "o") {
-        let u = "https://google.com/search?q="+escape(input.value);
+        let u = document.querySelector("#search-url").value.replace("{query}", escape(input.value));
         window.open(u, "_blank");
     }
-
 });

@@ -27,8 +27,9 @@ type Config struct {
 }
 
 type App struct {
-	LogLevel  string `yaml:"log_level"`
 	Directory string `yaml:"directory"`
+	SearchURL string `yaml:"search_url"`
+	LogLevel  string `yaml:"log_level"`
 }
 
 type Server struct {
@@ -88,6 +89,7 @@ func Load(filename string) (*Config, error) {
 func CreateDefaultConfig() *Config {
 	return &Config{
 		App: App{
+			SearchURL: "https://google.com/search?q={query}",
 			Directory: "~/.config/hister/",
 			LogLevel:  "info",
 		},

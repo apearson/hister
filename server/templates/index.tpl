@@ -14,5 +14,6 @@
     </div>
 </template>
 <input type="hidden" id="ws-url" value="{{ .Config.WebSocketURL }}" />
+<input type="hidden" id="search-url" value="{{ .Config.App.SearchURL }}" />
 <script src="static/js/search.js"></script>
 {{ end }}
