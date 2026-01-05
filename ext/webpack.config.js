@@ -1,3 +1,4 @@
+const fs = require('fs');
 
 const webpack = require('webpack'),
     path = require('path'),
@@ -139,7 +140,59 @@ const addon = {
     devtool: 'cheap-module-source-map'
 };
 
+//const GM_HEADER = `// ==UserScript==
+//// @name        Hister
+//// @namespace   https://github.com/asciimoo/hister
+//// @include     *
+//// @match       http://*/*
+//// @match       https://*/*
+//// @version     ${process.env.npm_package_version}
+//// @grant        GM.xmlHttpRequest
+//// ==/UserScript==
+//`;
+//
+//const gmOutDir = srcDir("../../assets/")
+//const gmOutFile = "hister.user.js"
+//
+//const greasemonkey = {
+//    mode: MODE,
+//    entry: {
+//        greasemonkey: [srcDir('/greasemonkey.ts')],
+//    },
+//    output: {
+//        path: gmOutDir,
+//        publicPath: '',
+//        filename: gmOutFile,
+//    },
+//    optimization: optimization,
+//    module: {rules: rules},
+//    resolve: resolve,
+//    plugins: [{
+//        apply: (compiler) => {
+//            compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+//                const fn = gmOutDir + gmOutFile
+//                const data = fs.readFileSync(fn);
+//                const fd = fs.openSync(fn, 'w+');
+//                const insert = new Buffer.alloc(GM_HEADER.length, GM_HEADER);
+//
+//                fs.writeSync(fd, insert, 0, insert.length, 0);
+//                fs.writeSync(fd, data, 0, data.length, insert.length);
+//                fs.close(fd, (err) => {
+//                    if (err){
+//                        throw err;
+//                    } else {
+//                        console.info('Successfully added the header to the userscript !');
+//                    }
+//                });
+//            });
+//        },
+//    }],
+//    devtool: 'cheap-module-source-map'
+//};
+
+
 
 module.exports = [
-    addon
+    addon,
+//    greasemonkey
 ];
