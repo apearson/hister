@@ -15,6 +15,12 @@
             <a class="menu-item float-right" href="/help">Help</a>
         </header>
         <main>
+            {{ if .Success }}
+            <div class="container box success">
+                <div class="header">{{ .Success }}</div>
+                {{ if .SuccessMsg }}<div class="content">{{ .SuccessMsg }}</div>{{ end }}
+            </div>
+            {{ end }}
             {{ template "main" . }}
         </main>
         <footer>

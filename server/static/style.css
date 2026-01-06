@@ -5,6 +5,7 @@
 	--color-semilight: #95a5a6;
     --color-blue: #3498db;
     --color-purple: #cb89f6;
+    --color-green: #2ecc71;
     --color-error: #e74c3c;
 }
 
@@ -32,9 +33,10 @@ body {
 	font-weight: 300;
 }
 
-a {
+a, summary {
 	color: var(--color-blue);
     text-decoration: none;
+    cursor: pointer;
 }
 
 img {
@@ -47,7 +49,7 @@ img[src] {
 a:visited {
 	color: var(--color-purple);
 }
-a:hover {
+a:hover, summary:hover {
     text-decoration: underline;
 }
 
@@ -133,6 +135,20 @@ table {
     max-width: 70em;
     margin: auto;
     margin-top: 1em;
+}
+
+.box {
+    border: 1px solid var(--color-light);
+    padding: 0.5em;
+    .header {
+        font-weight: bold;
+        font-size: 1.4em;
+    }
+}
+
+.success {
+    border-color: var(--color-green);
+    color: var(--color-green);
 }
 
 .full-width {

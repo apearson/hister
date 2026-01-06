@@ -231,7 +231,9 @@ func serveRules(c *webContext) {
 		serve500(c)
 		return
 	}
-	c.Render("rules", nil)
+	c.Render("rules", tArgs{
+		"Success": "Rules saved",
+	})
 	return
 }
 
