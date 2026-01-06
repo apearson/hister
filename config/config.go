@@ -38,14 +38,17 @@ type Server struct {
 }
 
 type Rules struct {
-	Skip     *Rule `json:"skip"`
-	Priority *Rule `json:"priority"`
+	Skip     *Rule   `json:"skip"`
+	Priority *Rule   `json:"priority"`
+	Aliases  Aliases `json:"aliases"`
 }
 
 type Rule struct {
 	ReStrs []string
 	re     *regexp.Regexp
 }
+
+type Aliases map[string]string
 
 func readConfigFile(filename string) ([]byte, string, error) {
 	b, err := os.ReadFile(filename)
@@ -193,6 +196,9 @@ func (c *Config) LoadRules() error {
 	if err != nil {
 		return err
 	}
+	if c.Rules.Aliases == nil {
+		c.Rules.Aliases = make(Aliases)
+	}
 	return c.Rules.Compile()
 }
 
@@ -266,4 +272,13 @@ func (r *Rules) Compile() error {
 		return err
 	}
 	return nil
+}
+
+func (r *Rules) ResolveAliases(s string) string {
+	for k, v := range r.Aliases {
+		if strings.Contains(s, k) {
+			s = strings.ReplaceAll(s, k, v)
+		}
+	}
+	return s
 }

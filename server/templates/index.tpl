@@ -1,10 +1,11 @@
-{{define "main"}}
+{{ define "main" }}
 <div class="search">
     <input type="text" autofocus placeholder="Search..." id="search" />
 </div>
 <div class="container">
     <div id="results-header" class="hidden">
-        <div>Total number of results: <span class="results-num"></span></div>
+        <div>Total number of results: <b class="results-num"></b></div>
+        <div class="expanded-query"></div>
     </div>
     <div id="results"></div>
 </div>

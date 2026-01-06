@@ -42,6 +42,7 @@ type Document struct {
 
 type Results struct {
 	Total     uint64      `json:"total"`
+	Query     *Query      `json:"query"`
 	Documents []*Document `json:"documents"`
 }
 
@@ -67,6 +68,7 @@ func Add(d *Document) error {
 }
 
 func Search(cfg *config.Config, q *Query) (*Results, error) {
+	q.Text = cfg.Rules.ResolveAliases(q.Text)
 	q.cfg = cfg
 	req := bleve.NewSearchRequest(q.create())
 	req.Fields = append(q.Fields, "favicon")
@@ -100,6 +102,7 @@ func Search(cfg *config.Config, q *Query) (*Results, error) {
 	}
 	r := &Results{
 		Total:     res.Total,
+		Query:     q,
 		Documents: matches,
 	}
 	return r, nil

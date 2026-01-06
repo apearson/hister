@@ -57,6 +57,7 @@ function renderResults(event) {
     resultsHeader.classList.add("hidden");
     const res = JSON.parse(event.data);
     results.innerHTML = "";
+    resultsHeader.querySelector(".expanded-query").innerHTML = "";
     const d = res.documents;
     if(!d || !d.length) {
         if(!input.value) {
@@ -73,6 +74,10 @@ function renderResults(event) {
     highlightIdx = 0;
     resultsHeader.querySelector(".results-num").innerText = res.total;
     resultsHeader.classList.remove("hidden");
+    console.log(res);
+    if(res.query.text != input.value) {
+        resultsHeader.querySelector(".expanded-query").innerHTML = `Expanded query: <code>"${res.query.text}"</code>`;
+    }
     for(let i in d) {
         let r = d[i];
         let n = createTemplate("result", {

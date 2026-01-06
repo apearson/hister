@@ -220,6 +220,11 @@ func serveRules(c *webContext) {
 	f := c.Request.Form
 	c.Config.Rules.Skip.ReStrs = strings.Fields(f.Get("skip"))
 	c.Config.Rules.Priority.ReStrs = strings.Fields(f.Get("priority"))
+	if f.Get("alias-keyword") != "" && f.Get("alias-value") != "" {
+		c.Config.Rules.Aliases[f.Get("alias-keyword")] = f.Get("alias-value")
+	}
+	c.Config.Rules.Skip.ReStrs = strings.Fields(f.Get("skip"))
+	c.Config.Rules.Priority.ReStrs = strings.Fields(f.Get("priority"))
 	err = c.Config.SaveRules()
 	if err != nil {
 		log.Error().Err(err).Msg("failed to save rules")
