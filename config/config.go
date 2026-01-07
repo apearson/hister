@@ -275,10 +275,18 @@ func (r *Rules) Compile() error {
 }
 
 func (r *Rules) ResolveAliases(s string) string {
-	for k, v := range r.Aliases {
-		if strings.Contains(s, k) {
-			s = strings.ReplaceAll(s, k, v)
+	sp := strings.Fields(s)
+	changed := false
+	for i, ss := range sp {
+		for k, v := range r.Aliases {
+			if ss == k {
+				sp[i] = v
+				changed = true
+			}
 		}
 	}
-	return s
+	if !changed {
+		return s
+	}
+	return strings.Join(sp, " ")
 }
