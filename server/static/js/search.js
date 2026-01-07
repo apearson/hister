@@ -111,6 +111,12 @@ function init() {
 
 let highlightIdx = 0;
 window.addEventListener("keydown", function(e) {
+    if(e.key == "/") {
+        if(document.activeElement != input) {
+            e.preventDefault();
+            input.focus();
+        }
+    }
     if(e.key == "Enter") {
         let url = document.querySelectorAll(".result a")[highlightIdx].getAttribute("href");
         openUrl(url);
