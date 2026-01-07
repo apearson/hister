@@ -261,7 +261,7 @@ func (q *Query) score(field string, term []byte, match bool) float64 {
 		s *= 10
 	}
 	if field == "url" && q.cfg.Rules.IsPriority(string(term)) {
-		s *= 1000
+		s *= 10
 	}
 	return s
 }
