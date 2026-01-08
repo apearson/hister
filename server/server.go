@@ -155,7 +155,10 @@ func serveSearch(c *webContext) {
 			log.Error().Err(err).Msg("failed to get indexer results")
 		}
 		hr, err := model.GetURLsByQuery(query.Text)
-		if err == nil {
+		if err == nil && len(hr) > 0 {
+			if res == nil {
+				res = &indexer.Results{}
+			}
 			res.History = hr
 		}
 		jr, err := json.Marshal(res)
