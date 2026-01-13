@@ -3,10 +3,13 @@ package indexer
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"errors"
 	"io"
+	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/asciimoo/hister/config"
 	"github.com/asciimoo/hister/server/model"
@@ -21,6 +24,7 @@ import (
 	"github.com/blevesearch/bleve/v2/search/query"
 	"github.com/blevesearch/bleve/v2/search/searcher"
 	index "github.com/blevesearch/bleve_index_api"
+	"github.com/rs/zerolog/log"
 )
 
 type indexer struct {
@@ -38,12 +42,13 @@ type Query struct {
 }
 
 type Document struct {
-	URL     string  `json:"url"`
-	HTML    string  `json:"html"`
-	Title   string  `json:"title"`
-	Text    string  `json:"text"`
-	Favicon string  `json:"favicon"`
-	Score   float64 `json:"score"`
+	URL        string  `json:"url"`
+	HTML       string  `json:"html"`
+	Title      string  `json:"title"`
+	Text       string  `json:"text"`
+	Favicon    string  `json:"favicon"`
+	Score      float64 `json:"score"`
+	faviconURL string
 }
 
 type Results struct {
@@ -125,9 +130,16 @@ func (d *Document) Process() error {
 	if pu.Scheme == "" || pu.Host == "" {
 		return errors.New("invalid URL: missing scheme/host")
 	}
-	// TODO download d.Favicon if missing
 	if d.Text == "" || d.Title == "" {
-		return d.extractHTML()
+		if err := d.extractHTML(); err != nil {
+			return err
+		}
+	}
+	if d.Favicon == "" {
+		err := d.DownloadFavicon()
+		if err != nil {
+			log.Warn().Err(err).Str("URL", d.faviconURL).Msg("failed to download favicon")
+		}
 	}
 	return nil
 }
@@ -186,8 +198,9 @@ out:
 				break out
 			}
 			return errors.New("failed to parse html: " + err.Error())
+		case html.SelfClosingTagToken:
 		case html.StartTagToken:
-			tn, _ := doc.TagName()
+			tn, hasAttrs := doc.TagName()
 			currentTag = string(tn)
 			switch currentTag {
 			case "body":
@@ -195,6 +208,27 @@ out:
 			case "style":
 			case "script":
 				skip = true
+			case "link":
+				var href string
+				icon := false
+				if !hasAttrs {
+					break
+				}
+				for {
+					aName, aVal, moreAttr := doc.TagAttr()
+					if bytes.Equal(aName, []byte("href")) {
+						href = string(aVal)
+					}
+					if bytes.Equal(aName, []byte("rel")) && bytes.Equal(aVal, []byte("icon")) {
+						icon = true
+					}
+					if !moreAttr {
+						break
+					}
+				}
+				if icon && href != "" {
+					d.faviconURL = fullURL(d.URL, href)
+				}
 			}
 		case html.TextToken:
 			if currentTag == "title" {
@@ -221,6 +255,37 @@ out:
 	if d.Title == "" {
 		return errors.New("no title found")
 	}
+	return nil
+}
+
+func (d *Document) DownloadFavicon() error {
+	if d.faviconURL == "" {
+		d.faviconURL = fullURL(d.URL, "/favicon.ico")
+	}
+	cli := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+	req, err := http.NewRequest("GET", d.faviconURL, nil)
+	req.Header.Set("User-Agent", "Hister")
+	if err != nil {
+		return err
+	}
+	resp, err := cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("invalid status code")
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	d.Favicon = "data:image/x-icon;base64," + base64.StdEncoding.EncodeToString(data)
 	return nil
 }
 
@@ -340,4 +405,16 @@ func (q *Query) score(field string, term []byte, match bool) float64 {
 		s *= 10
 	}
 	return s
+}
+
+func fullURL(base, u string) string {
+	pu, err := url.Parse(u)
+	if err != nil {
+		return ""
+	}
+	pb, err := url.Parse(base)
+	if err != nil {
+		return ""
+	}
+	return pb.ResolveReference(pu).String()
 }
