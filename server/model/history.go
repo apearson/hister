@@ -35,6 +35,12 @@ type URLCount struct {
 	Count uint   `json:"count"`
 }
 
+type HistoryItem struct {
+	Query string `json:"query"`
+	Title string `json:"title"`
+	URL   string `json:"url"`
+}
+
 func GetOrCreateLink(u, title string) *Link {
 	var ret *Link
 	if err := DB.Model(&Link{}).Where("url = ?", u).First(&ret).Error; err != nil {
@@ -88,7 +94,18 @@ func GetURLsByQuery(q string) ([]*URLCount, error) {
 		Joins("JOIN links ON history_links.link_id = links.id").
 		Joins("JOIN histories ON history_links.history_id = histories.id").
 		Where("histories.query = ?", q).
-		Order("history_links.count desc").
+		Order("history_links.count DESC").
 		Limit(20).Find(&us).Error
 	return us, err
+}
+
+func GetLatestHistoryItems(limit int) ([]*HistoryItem, error) {
+	var hs []*HistoryItem
+	err := DB.Select("links.url as url, links.title as title, histories.query as query").
+		Table("history_links").
+		Joins("JOIN links ON history_links.link_id = links.id").
+		Joins("JOIN histories ON history_links.history_id = histories.id").
+		Order("history_links.updated_at DESC").
+		Limit(limit).Find(&hs).Error
+	return hs, err
 }

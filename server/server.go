@@ -61,6 +61,7 @@ func init() {
 	addTemplate("rules", "layout/base.tpl", "rules.tpl")
 	addTemplate("help", "layout/base.tpl", "help.tpl")
 	addTemplate("about", "layout/base.tpl", "about.tpl")
+	addTemplate("history", "layout/base.tpl", "history.tpl")
 }
 
 func Listen(cfg *config.Config) {
@@ -234,10 +235,17 @@ func serveAdd(c *webContext) {
 
 func serveHistory(c *webContext) {
 	m := c.Request.Method
-	//if m == http.MethodGet {
-	//	c.Render("history", nil)
-	//	return
-	//}
+	if m == http.MethodGet {
+		hs, err := model.GetLatestHistoryItems(40)
+		if err != nil {
+			serve500(c)
+			return
+		}
+		c.Render("history", tArgs{
+			"History": hs,
+		})
+		return
+	}
 	if m != http.MethodPost {
 		serve500(c)
 		return

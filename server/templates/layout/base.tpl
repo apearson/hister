@@ -11,6 +11,7 @@
     <body>
         <header>
             <h1 class="menu-item"><img src="/static/logo.png" /> <a href='/'>Hister</a></h1>
+            <a class="menu-item" href="/history">History</a>
             <a class="menu-item" href="/rules">Rules</a>
             <a class="menu-item" href="/add">Add</a>
             <a class="menu-item float-right" href="/help">Help</a>
