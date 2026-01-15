@@ -58,6 +58,11 @@ function renderResults(event) {
     resultsHeader.classList.add("hidden");
     const res = JSON.parse(event.data);
     results.replaceChildren();
+    if(res.search_duration) {
+        resultsHeader.querySelector(".duration").innerText = res.search_duration;
+    } else {
+        resultsHeader.querySelector(".duration").innerText = "";
+    }
     resultsHeader.querySelector(".expanded-query").innerHTML = "";
     const d = res.documents;
     if(!d || !d.length) {

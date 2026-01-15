@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -146,6 +147,7 @@ func serveSearch(c *webContext) {
 	defer conn.Close()
 	for {
 		_, q, err := conn.ReadMessage()
+		start := time.Now()
 		if err != nil {
 			log.Error().Err(err).Msg("failed to read websocket message")
 			break
@@ -169,6 +171,7 @@ func serveSearch(c *webContext) {
 			}
 			res.History = hr
 		}
+		res.SearchDuration = fmt.Sprintf("%v", time.Since(start))
 		jr, err := json.Marshal(res)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to marshal indexer results")

@@ -4,6 +4,7 @@
 </div>
 <div class="container">
     <div id="results-header" class="hidden">
+        <div class="duration float-right"></div>
         <div>Total number of results: <b class="results-num"></b></div>
         <div class="expanded-query"></div>
     </div>

@@ -53,10 +53,11 @@ type Document struct {
 }
 
 type Results struct {
-	Total     uint64            `json:"total"`
-	Query     *Query            `json:"query"`
-	Documents []*Document       `json:"documents"`
-	History   []*model.URLCount `json:"history"`
+	Total          uint64            `json:"total"`
+	Query          *Query            `json:"query"`
+	Documents      []*Document       `json:"documents"`
+	History        []*model.URLCount `json:"history"`
+	SearchDuration string            `json:"search_duration"`
 }
 
 var i *indexer
