@@ -125,7 +125,8 @@ function getSearchUrl(query) {
 
 function openUrl(u, newWindow) {
     if(newWindow) {
-        window.open(u, '_blank').focus();
+        window.open(u, '_blank');
+        window.focus();
         return;
     }
     window.location.href = u;
@@ -161,6 +162,7 @@ window.addEventListener("keydown", function(e) {
         }
     }
     if(e.key == "Enter") {
+        e.preventDefault();
         let res = document.querySelectorAll(".result a")[highlightIdx];
         let newWindow = e.ctrlKey ? true : false;
         openResult({'target': res}, newWindow);
