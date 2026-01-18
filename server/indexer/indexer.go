@@ -124,7 +124,7 @@ func Search(cfg *config.Config, q *Query) (*Results, error) {
 }
 
 func GetByURL(u string) *Document {
-	q := query.NewTermQuery(u)
+	q := query.NewTermQuery(strings.ToLower(u))
 	q.SetField("url")
 	req := bleve.NewSearchRequest(q)
 	req.Fields = append(allFields, "favicon")
