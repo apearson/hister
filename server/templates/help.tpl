@@ -1,9 +1,9 @@
 {{define "main"}}
 <div class="container">
 <h2>Search Shortcuts</h2>
-<p>Press <kbd>enter</kbd> to open the first result. Alternatively press <kbd>ctrl+enter</kbd> to open in new tab.</p>
-<p>Navigate in results with <kbd>ctrl+j</kbd> and <kbd>ctrl+k</kbd>. <kbd>Enter</kbd>/<kbd>ctrl+enter</kbd> opens the selected result.</p>
-<p>Press <kbd>ctrl+o</kbd> to open the search query in the configured search engine.</p>
+<p>Press <kbd>enter</kbd> to open the first result. Alternatively press <kbd>alt+enter</kbd> to open in new tab.</p>
+<p>Navigate in results with <kbd>alt+j</kbd> and <kbd>alt+k</kbd>. <kbd>Enter</kbd>/<kbd>alt+enter</kbd> opens the selected result.</p>
+<p>Press <kbd>alt+o</kbd> to open the search query in the configured search engine.</p>
 <h2>Search Syntax</h2>
 <p>Use <kbd>quotes</kbd> to match phrases.</p>
 <p>Use <kbd>*</kbd> for wildcard matches.</p>

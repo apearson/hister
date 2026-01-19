@@ -14,8 +14,8 @@ const tips = [
     'Use <code>*</code> for partial match.<br />Prefixing word with <code>-</code> excludes matching documents.',
     'Click on the three dots near the result URL to specify priority queries for that result.',
     'Press <code>enter</code> to open the first result.',
-    'Use <code>ctrl+k</code> and <code>ctrl+j</code> to navigate between results.',
-    'Press <code>ctrl+o</code> to open current search query in your configured search engine.',
+    'Use <code>alt+k</code> and <code>alt+j</code> to navigate between results.',
+    'Press <code>alt+o</code> to open current search query in your configured search engine.',
     'Use <code>url:</code> prefix to search only in the URL field. E.g.: <code>url:*github* hister</code>.',
 ];
 
@@ -294,7 +294,7 @@ window.addEventListener("keydown", function(e) {
     if(e.key == "Enter") {
         e.preventDefault();
         let res = document.querySelectorAll(".result .result-title a")[highlightIdx];
-        let newWindow = e.ctrlKey ? true : false;
+        let newWindow = e.altKey ? true : false;
         openResult({'target': res}, newWindow);
         return
     }
@@ -306,7 +306,7 @@ window.addEventListener("keydown", function(e) {
             return;
         }
     }
-    if(e.ctrlKey && (e.key == "j" || e.key == "k")) {
+    if(e.altKey && (e.key == "j" || e.key == "k")) {
         e.preventDefault();
 
         let res = document.querySelectorAll(".result");
@@ -317,9 +317,16 @@ window.addEventListener("keydown", function(e) {
         res[highlightIdx].classList.add("highlight");
         return;
     }
-    if(e.ctrlKey && e.key == "o") {
+    if(e.altKey && e.key == "o") {
         e.preventDefault();
         openUrl(getSearchUrl(input.value));
+        return
+    }
+    if(e.altKey && e.key == "v") {
+        e.preventDefault();
+        if(!closePopup()) {
+            openReadable({'target': document.querySelectorAll(".result .readable")[highlightIdx]});
+        }
         return
     }
     if(e.key == 'Escape') {
