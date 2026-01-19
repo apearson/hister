@@ -306,12 +306,12 @@ func indexURL(u string) error {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		errors.New(`failed to download file: ` + err.Error())
+		return errors.New(`failed to download file: ` + err.Error())
 	}
 	req.Header.Set("User-Agent", "Hister")
 	r, err := client.Do(req)
 	if err != nil {
-		errors.New(`failed to download file: ` + err.Error())
+		return errors.New(`failed to download file: ` + err.Error())
 	}
 	defer r.Body.Close()
 	contentType := r.Header.Get("Content-type")
@@ -325,7 +325,7 @@ func indexURL(u string) error {
 		HTML: string(buf.Bytes()),
 	}
 	if err := d.Process(); err != nil {
-		errors.New(`failed to process document: ` + err.Error())
+		return errors.New(`failed to process document: ` + err.Error())
 	}
 	dj, err := json.Marshal(d)
 	if err != nil {
@@ -335,10 +335,10 @@ func indexURL(u string) error {
 	req.Header.Set("content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
-		errors.New(`failed to send page to hister: ` + err.Error())
+		return errors.New(`failed to send page to hister: ` + err.Error())
 	}
 	if resp.StatusCode != http.StatusCreated {
-		errors.New(fmt.Sprintf("failed to send page to hister: Invalid status code (%d)", resp.StatusCode))
+		return errors.New(fmt.Sprintf("failed to send page to hister: Invalid status code (%d)", resp.StatusCode))
 	}
 	defer resp.Body.Close()
 	return nil
