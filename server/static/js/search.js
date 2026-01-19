@@ -176,6 +176,7 @@ function createPriorityResult(r) {
         },
         ".readable": e => createReadable(e, r.url),
         ".result-url": (e) => { e.textContent = r.url; },
+        ".action-button": e => e.addEventListener("click", (ev) => togglePriorityActions(ev, e.closest(".result"))),
     });
     return rn;
 }
@@ -238,6 +239,22 @@ function closePopup() {
     return false;
 }
 
+function togglePriorityActions(ev, res) {
+    let a = res.querySelector(".actions")
+    if(a) {
+        closeActions(a);
+        return;
+    }
+    a = createTemplate("priority-actions", {
+        ".delete": (e) => e.addEventListener("click", () => savePriorityResult(e, true)),
+        ".close": (e) => e.addEventListener("click", () => closeActions(e)),
+    });
+    for(let e of a.children) {
+        e.style.animation = "fade-in 0.5s";
+    }
+    res.appendChild(a);
+}
+
 function toggleActions(ev, res) {
     let a = res.querySelector(".actions")
     if(a) {
@@ -245,7 +262,7 @@ function toggleActions(ev, res) {
         return;
     }
     a = createTemplate("result-actions", {
-        ".save": (e) => e.addEventListener("click", () => savePriorityResult(e)),
+        ".save": (e) => e.addEventListener("click", () => savePriorityResult(e, false)),
         ".close": (e) => e.addEventListener("click", () => closeActions(e)),
     });
     for(let e of a.children) {
@@ -258,26 +275,30 @@ function closeActions(e) {
     e.closest(".actions").remove();
 }
 
-function savePriorityResult(e) {
+function savePriorityResult(e, remove) {
     let result = e.closest(".result");
     let link = result.querySelector(".result-title a");
     let url = link.getAttribute("href");
     let title = link.innerText;
-    let query = result.querySelector(".action-query").value;
+    let query = input.value;
+    let queryEl = result.querySelector(".action-query");
+    if(queryEl && queryEl.value) {
+        query = queryEl.value;
+    }
     if(!query) {
         return;
     }
-    saveHistoryItem(url, title, query).then((r) => {
+    saveHistoryItem(url, title, query, remove).then((r) => {
         result.querySelector(".actions").appendChild(createTemplate("success", {
-            ".message": (e) => e.innerText = "Priority result added.",
+            ".message": (e) => e.innerText = `Priority result ${remove ? "deleted" : "added"}.`,
         }));
     });
 }
 
-function saveHistoryItem(url, title, query) {
+function saveHistoryItem(url, title, query, remove) {
     return fetch("/history", {
         method: "POST",
-        body: JSON.stringify({"url": url, "title": title, "query": query}),
+        body: JSON.stringify({"url": url, "title": title, "query": query, "delete": remove}),
         headers: {"Content-type": "application/json; charset=UTF-8"},
     })
 }

@@ -26,9 +26,10 @@ var fs http.Handler
 type tArgs map[string]any
 
 type historyItem struct {
-	URL   string `json:"url"`
-	Title string `json:"title"`
-	Query string `json:"query"`
+	URL    string `json:"url"`
+	Title  string `json:"title"`
+	Query  string `json:"query"`
+	Delete bool   `json:"delete"`
 }
 
 var tFns = template.FuncMap{
@@ -265,6 +266,12 @@ func serveHistory(c *webContext) {
 	err := json.NewDecoder(c.Request.Body).Decode(h)
 	if err != nil {
 		serve500(c)
+		return
+	}
+	if h.Delete {
+		if err := model.DeleteHistoryItem(h.Query, h.URL); err != nil {
+			serve500(c)
+		}
 		return
 	}
 	err = model.UpdateHistory(strings.TrimSpace(h.Query), strings.TrimSpace(h.URL), strings.TrimSpace(h.Title))

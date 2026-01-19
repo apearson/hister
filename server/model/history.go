@@ -69,6 +69,18 @@ func GetOrCreateHistory(q string) *History {
 	return ret
 }
 
+func DeleteHistoryItem(query, url string) error {
+	return DB.Delete(
+		&HistoryLink{},
+		"id in (?)",
+		DB.Table("history_links").
+			Select("history_links.id").
+			Joins("JOIN histories ON history_links.history_id = histories.id").
+			Joins("JOIN links ON history_links.link_id = links.id").
+			Where("histories.query = ? and links.url = ?", query, url),
+	).Error
+}
+
 func UpdateHistory(query, url, title string) error {
 	if query == "" || url == "" || title == "" {
 		return errors.New("missing data")

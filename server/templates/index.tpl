@@ -34,6 +34,12 @@
     <button class="save">Save</button>
 </div>
 </template>
+<template id="priority-actions">
+<div class="actions bordered padded mt-1">
+    <a class="close float-right">close</a>
+    <button class="delete">Delete this priority result</button>
+</div>
+</template>
 <template id="success">
 <p class="success">
     <b>Success!</b> <span class="message"></span>
