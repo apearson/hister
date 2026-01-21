@@ -4,21 +4,9 @@
 
 <p>Hister is a web history management tool that provides blazing fast, content-based search for visited websites. Unlike traditional browser history that only searches URLs and titles, Hister indexes the full content of web pages you visit, enabling deep and meaningful search across your browsing history.</p>
 
-<h2>Why Hister?</h2>
-
-<p>Free online search engines constantly losing quality in terms of providing meaningful results without distraction.<br />
-No privacy, AI suggestions, advertisements, sponsored results, indexed AI content and so on.</p>
-
-<p>When we search online it can be because of two reasons:</p>
-<ul>
-    <li>We'd like to <b>find new information</b></li>
-    <li>We'd like to <b>recall information we've read before</b></li>
-</ul>
-<p>Hister provides solution to the latter by indexing all the websites you visit and providing a search interface as efficient as possible, while seamlessly letting you fall back to the traditional search methods in case you need to find unexplored content.</p>
-
 <h2>Features</h2>
 
-<p>Traditional browser history features are limited to basic keyword matching on URLs and page titles. Hister goes beyond these limitations by:
+<p>Traditional browser history features are limited to basic keyword matching on URLs and page titles. Hister goes beyond these limitations by:</p>
 
 <ul>
 	<li><b>Privacy-focused</b>: Keep your browsing history indexed locally on your machine</li>
@@ -26,8 +14,27 @@ No privacy, AI suggestions, advertisements, sponsored results, indexed AI conten
 	<li><b>Advanced search capabilities</b>: Utilize a powerful query language for precise results</li>
 	<li><b>Smart organization</b>: Configure blacklist and priority rules for better control</li>
 	<li><b>Efficient retrieval</b>: Use keyword aliases to quickly find content</li>
+	<li><b>Offline preview</b>: Open clutter-free, offline preview of result web pages</li>
 </ul>
-</p>
+
+<h2>Why Hister?</h2>
+
+<p>When we search online it can be because of two reasons:</p>
+<ul>
+    <li>We'd like to <b>find new information</b></li>
+    <li>We'd like to <b>recall information we've read before</b></li>
+</ul>
+<p>Hister aids you with the latter by indexing all the websites you visit and providing a search interface as efficient as possible, while seamlessly letting you fall back to the traditional search methods in case you need to find unexplored content.</p>
+
+<hr />
+<p>Benefits of using Hister instead of free online search engines:</p>
+<ul>
+    <li>Privacy</li>
+    <li>No advertisements</li>
+    <li>No incorrect AI suggestion</li>
+    <li>No sponsored results</li>
+    <li>No manipulated result order</li>
+</ul>
 
 <h2>Use Cases</h2>
 
