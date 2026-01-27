@@ -21,8 +21,8 @@
 
 <p>When we search online it can be because of two reasons:</p>
 <ul>
-    <li>We'd like to <b>find new information</b></li>
-    <li>We'd like to <b>recall information we've read before</b></li>
+    <li><b>Find new information</b></li>
+    <li><b>Recall information we've read before</b></li>
 </ul>
 <p>Hister aids you with the latter by indexing all the websites you visit and providing a search interface as efficient as possible, while seamlessly letting you fall back to the traditional search methods in case you need to find unexplored content.</p>
 
