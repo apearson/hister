@@ -173,7 +173,7 @@ function createPriorityResult(r) {
             e.setAttribute("href", r.url);
             e.innerHTML = r.title || "*title*";
             // TODO handle middleclick (auxclick handler)
-            e.addEventListener("click", openResult);
+            clickHandler(e, openResult, ev => openResult(ev, true));
             e.classList.add("success");
         },
         ".readable": e => createReadable(e, r.url),
@@ -189,7 +189,7 @@ function createResult(r) {
             e.setAttribute("href", r.url);
             e.innerHTML = r.title || "*title*";
             // TODO handle middleclick (auxclick handler)
-            e.addEventListener("click", openResult);
+            clickHandler(e, openResult, ev => openResult(ev, true));
         },
         ".readable": e => createReadable(e, r.url),
         "img": e => e.setAttribute("src", r.favicon || emptyImg),
@@ -198,6 +198,16 @@ function createResult(r) {
         "p": e => e.innerHTML = r.text || "",
     });
     return rn;
+}
+
+function clickHandler(e, leftClickCallback, middleClickCallback) {
+    e.addEventListener("click", leftClickCallback);
+	e.addEventListener("auxclick", ev => {
+		if (ev.button == 1) {
+			middleClickCallback(ev);
+		}
+	});
+
 }
 
 function createReadable(e, u) {
