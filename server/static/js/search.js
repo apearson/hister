@@ -95,6 +95,9 @@ function renderResults(event) {
         resultElements.push(createResult(r));
     }
     results.replaceChildren(...resultElements);
+    if(resultElements.length > 0) {
+        document.querySelector(".result").classList.add("highlight");
+    }
 };
 
 input.addEventListener("input", () => {

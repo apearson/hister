@@ -308,7 +308,9 @@ code, kbd {
 }
 
 .highlight {
-    background: var(--color-grey);
+    background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.10), transparent);
+    border-left: 3px solid var(--color-blue);
+    padding-left: 1em;
 }
 
 .error {
