@@ -33,6 +33,7 @@ var cfg *config.Config
 var rootCmd = &cobra.Command{
 	Use:     "hister",
 	Short:   "Web history on steroids",
+	Long:    ui.Banner,
 	Version: "v0.1.0",
 	//Run: func(_ *cobra.Command, _ []string) {
 	//},
