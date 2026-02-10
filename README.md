@@ -23,17 +23,22 @@ Hister is a web history management tool that provides blazing fast, content-base
 
 ## Setup & run
 
+### Install the extension
+
+Available for [Chrome](https://chromewebstore.google.com/detail/hister/cciilamhchpmbdnniabclekddabkifhb) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/hister/)
+
+### Download pre-built binary
+
 Grab a pre-built binary from the [latest release](https://github.com/asciimoo/hister/releases/latest). (Don't forget to `chmod +x`)
 
 Execute `./hister` to see all available commands.
 
-### Build
+### Build for yourself
 
  - Clone the repository
  - Build with `go build`
  - Run `./hister help` to list the available commands
  - Execute `./hister listen` to start the web application
- - Install the extension: [Chrome](https://chromewebstore.google.com/detail/hister/cciilamhchpmbdnniabclekddabkifhb), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/hister/)
 
 
 ## Configuration
