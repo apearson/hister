@@ -174,8 +174,7 @@ func serveIndex(c *webContext) {
 			Text: c.Config.Rules.ResolveAliases(q),
 		})
 		if err != nil {
-			serve500(c)
-			return
+			res = &indexer.Results{}
 		}
 		hr, err := model.GetURLsByQuery(q)
 		if err == nil && len(hr) > 0 {
