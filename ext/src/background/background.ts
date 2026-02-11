@@ -5,7 +5,7 @@ import {
 
 const missingURLMsg = {"error": "Missing or invalid Hister server URL. Configure it in the addon popup."};
 // TODO check source
-async function cjsMsgHandler(request, sender, sendResponse) {
+function cjsMsgHandler(request, sender, sendResponse) {
     chrome.storage.local.get(['histerURL']).then(data => {
         let u = data['histerURL'] || "";
         if(!u) {
@@ -16,14 +16,17 @@ async function cjsMsgHandler(request, sender, sendResponse) {
             u += '/';
         }
         if(request.pageData) {
-            sendPageData(u+"add", request.pageData).then((r) => sendResponse({"msg": "ok"})).catch(err => sendResponse({"error": err}));
+            sendPageData(u+"add", request.pageData).then((r) => sendResponse({"status": "ok"})).catch(err => sendResponse({"error": err.message}));
+            return true;
         }
         if(request.resultData) {
-            sendResult(u+"history", request.resultData).then((r) => sendResponse({"msg": "ok"})).catch(err => sendResponse({"error": err}));
+            sendResult(u+"history", request.resultData).then((r) => sendResponse({"status": "ok"})).catch(err => sendResponse({"error": err.message}));
+            return true;
         }
     }).catch(error => {
         chrome.tabs.sendMessage(sender.tab.id, missingURLMsg);
     });
+    return true;
 }
 
 chrome.runtime.onMessage.addListener(cjsMsgHandler);

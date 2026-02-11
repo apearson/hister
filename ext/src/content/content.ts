@@ -12,7 +12,7 @@ const sleepIncrementRatio = 2;
 
 window.addEventListener("load", extract, false);
 
-function extract() {
+function extract(sendResponse) {
     registerResultExtractor(window, r => chrome.runtime.sendMessage({resultData:  r}));
     try {
         d = extractPageData();
@@ -20,7 +20,7 @@ function extract() {
         console.log("failed to extract page data:", e);
         return;
     }
-    chrome.runtime.sendMessage({pageData:  d}, resp => {});
+    chrome.runtime.sendMessage({pageData:  d}, resp => { if(typeof sendResponse === 'function') sendResponse(resp) });
     setTimeout(update, sleepTime);
 }
 
@@ -54,9 +54,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         return;
     }
     if(request.action == "reindex") {
-        extract();
-        sendResponse({"action": "reindex", "status": "ok"});
-		return;
+        extract(sendResponse);
+		return true;
     }
     console.log("message received", request)
 });
