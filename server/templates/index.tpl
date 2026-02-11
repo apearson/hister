@@ -37,13 +37,14 @@
     <a class="close float-right">close</a>
     Prioritize this result for the following query:<br />
     <input type="text" class="action-query" placeholder="Query.." />
-    <button class="save">Save</button>
+    <button class="save">Save</button><br />
+    <button class="delete error">Delete this result</button>
 </div>
 </template>
 <template id="priority-actions">
 <div class="actions bordered padded mt-1">
     <a class="close float-right">close</a>
-    <button class="delete">Delete this priority result</button>
+    <button class="delete error">Delete this priority result</button>
 </div>
 </template>
 <template id="success">

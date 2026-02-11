@@ -358,7 +358,7 @@ function togglePriorityActions(ev, res) {
         return;
     }
     a = createTemplate("priority-actions", {
-        ".delete": (e) => e.addEventListener("click", () => savePriorityResult(e, true)),
+        ".delete": (e) => e.addEventListener("click", () => updatePriorityResult(e, true)),
         ".close": (e) => e.addEventListener("click", () => closeActions(e)),
     });
     for(let e of a.children) {
@@ -374,8 +374,9 @@ function toggleActions(ev, res) {
         return;
     }
     a = createTemplate("result-actions", {
-        ".save": (e) => e.addEventListener("click", () => savePriorityResult(e, false)),
+        ".save": (e) => e.addEventListener("click", () => updatePriorityResult(e, false)),
         ".close": (e) => e.addEventListener("click", () => closeActions(e)),
+        ".delete": (e) => e.addEventListener("click", () => deleteResult(e)),
     });
     for(let e of a.children) {
         e.style.animation = "fade-in 0.5s";
@@ -387,7 +388,7 @@ function closeActions(e) {
     e.closest(".actions").remove();
 }
 
-function savePriorityResult(e, remove) {
+function updatePriorityResult(e, remove) {
     let result = e.closest(".result");
     let link = result.querySelector(".result-title a");
     let url = link.getAttribute("href");
@@ -404,6 +405,18 @@ function savePriorityResult(e, remove) {
         result.querySelector(".actions").appendChild(createTemplate("success", {
             ".message": (e) => e.innerText = `Priority result ${remove ? "deleted" : "added"}.`,
         }));
+    });
+}
+
+function deleteResult(e) {
+    let result = e.closest(".result");
+    let url = result.querySelector(".result-title a").getAttribute("href");
+    let data = new URLSearchParams({"url": url});
+    fetch("/delete", {
+        method: "POST",
+        body: data,
+    }).then((r) => {
+        result.remove();
     });
 }
 
