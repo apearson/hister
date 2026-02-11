@@ -40,9 +40,9 @@ const tips = [
     'Use <code>*</code> for partial match.<br />Prefixing word with <code>-</code> excludes matching documents.',
     'Click on the three dots near the result URL to specify priority queries for that result.',
     'Press <code>enter</code> to open the first result.',
-    'Use <code>alt+k</code> and <code>alt+j</code> to navigate between results.',
+    'Use <code>alt+k</code> and <code>alt+j</code> to navigate between results.', // TODO replace keybindings to configured hotkeys
     'Press <code>alt+o</code> to open current search query in your configured search engine.',
-    'Use <code>url:</code> prefix to search only in the URL field. E.g.: <code>url:*github* hister</code>.',
+    'Use <code>url:</code> prefix to search only in the URL field. E.g.: <code>url:*github* hister</code>.', // TODO replace keybindings to configured hotkeys
     'Set hister to your default search engine in your browser to access it with ease.',
     'Start search query with <code>!!</code> to open the query in your configured search engine',
 ];

@@ -57,7 +57,7 @@ type Rule struct {
 
 type Aliases map[string]string
 
-var hotkeyKeyRe *regexp.Regexp = regexp.MustCompile("^((ctrl|alt|meta)\\+)?([a-z0-9/?]|enter|tab)$")
+var hotkeyKeyRe *regexp.Regexp = regexp.MustCompile("^((ctrl|alt|meta)\\+)?([a-z0-9/?]|enter|tab|arrow(up|down|right|left))$")
 var hotkeyActions = []string{
 	"select_previous_result",
 	"select_next_result",
