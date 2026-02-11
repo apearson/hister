@@ -108,6 +108,9 @@ const addon = {
                             "data_collection_permissions": {
                                 "required": ["browsingActivity", "websiteContent"],
                             },
+                            "content_security_policy": {
+                                "extension_pages": "default-src 'self'"
+                            },
                         };
 						content['browser_specific_settings'] = {
 							"gecko": ff_settings,
