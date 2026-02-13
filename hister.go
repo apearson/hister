@@ -186,7 +186,11 @@ var reindexCmd = &cobra.Command{
 	Short: "Reindex",
 	Long:  `Recreate index - server should be stopped`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := indexer.Reindex(cfg.IndexPath(), cfg.FullPath("tmp_index.db"), cfg.Rules)
+		skipSensitive := false
+		if b, err := cmd.Flags().GetBool("exclude-sensitive"); err == nil {
+			skipSensitive = b
+		}
+		err := indexer.Reindex(cfg.IndexPath(), cfg.FullPath("tmp_index.db"), cfg.Rules, skipSensitive)
 		if err != nil {
 			exit(1, err.Error())
 		}
@@ -220,6 +224,8 @@ func init() {
 	indexCmd.Flags().StringP("server-url", "u", dcfg.Server.BaseURL, "hister server URL")
 
 	importCmd.Flags().IntP("min-visit", "m", 1, "only import URLs that were opened at least 'min-visit' times")
+
+	reindexCmd.Flags().BoolP("exclude-sensitive", "x", false, "don't add documents that contain sensitive content matched by config.SensitiveContentPatterns")
 
 	cobra.OnInitialize(initialize)
 

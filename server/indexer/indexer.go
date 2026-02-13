@@ -52,16 +52,17 @@ type Query struct {
 }
 
 type Document struct {
-	URL        string  `json:"url"`
-	Domain     string  `json:"domain"`
-	HTML       string  `json:"html"`
-	Title      string  `json:"title"`
-	Text       string  `json:"text"`
-	Favicon    string  `json:"favicon"`
-	Score      float64 `json:"score"`
-	Added      int64   `json:"added"`
-	faviconURL string
-	processed  bool
+	URL                string  `json:"url"`
+	Domain             string  `json:"domain"`
+	HTML               string  `json:"html"`
+	Title              string  `json:"title"`
+	Text               string  `json:"text"`
+	Favicon            string  `json:"favicon"`
+	Score              float64 `json:"score"`
+	Added              int64   `json:"added"`
+	faviconURL         string
+	processed          bool
+	skipSensitiveCheck bool
 }
 
 type Results struct {
@@ -99,7 +100,7 @@ func Init(cfg *config.Config) error {
 	return nil
 }
 
-func Reindex(idxPath, tmpIdxPath string, rules *config.Rules) error {
+func Reindex(idxPath, tmpIdxPath string, rules *config.Rules, skipSensitiveChecks bool) error {
 	idx, err := bleve.Open(idxPath)
 	if err != nil {
 		return err
@@ -123,9 +124,11 @@ func Reindex(idxPath, tmpIdxPath string, rules *config.Rules) error {
 		}
 		for _, h := range res.Hits {
 			d := docFromHit(h)
+			d.skipSensitiveCheck = skipSensitiveChecks
 			if err := d.Process(); err != nil {
 				if errors.Is(err, ErrSensitiveContent) {
 					log.Warn().Err(err).Str("URL", d.URL).Msg("Skipping document")
+					continue
 				} else {
 					tmpIdx.Close()
 					os.RemoveAll(tmpIdxPath)
@@ -229,7 +232,7 @@ func (d *Document) Process() error {
 	if d.processed {
 		return nil
 	}
-	if sensitiveContentRe.MatchString(d.HTML) {
+	if !d.skipSensitiveCheck && sensitiveContentRe.MatchString(d.HTML) {
 		log.Debug().Msg("Matching sensitive content: " + strings.Join(sensitiveContentRe.FindAllString(d.HTML, -1), ","))
 		return ErrSensitiveContent
 	}
