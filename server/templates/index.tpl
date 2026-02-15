@@ -57,6 +57,11 @@
     <b>Success!</b> <span class="message"></span>
 </p>
 </template>
+<template id="error">
+<p class="error">
+    <b>Error!</b> <span class="message"></span>
+</p>
+</template>
 <template id="popup">
 <div class="popup-wrapper">
     <div class="popup container">

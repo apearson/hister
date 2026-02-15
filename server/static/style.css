@@ -393,6 +393,7 @@ table {
 }
 
 .error {
+    border-color: var(--color-error);
     color: var(--color-error);
 }
 

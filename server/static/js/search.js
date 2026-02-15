@@ -417,9 +417,18 @@ function updatePriorityResult(e, remove) {
         return;
     }
     saveHistoryItem(url, title, query, remove).then((r) => {
-        result.querySelector(".actions").appendChild(createTemplate("success", {
-            ".message": (e) => e.innerText = `Priority result ${remove ? "deleted" : "added"}.`,
-        }));
+        let tpl;
+        if(r.status_code == 200) {
+            tpl = createTemplate("success", {
+                ".message": (e) => e.innerText = `Priority result ${remove ? "deleted" : "added"}.`,
+            });
+        } else {
+            tpl = createTemplate("error", {
+                ".message": (e) => e.innerText = `Failed to ${remove ? "delete" : "add"} priority result.`,
+            });
+        }
+
+        result.querySelector(".actions").appendChild(tpl);
     });
 }
 
