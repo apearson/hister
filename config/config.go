@@ -64,7 +64,7 @@ type Rule struct {
 type Aliases map[string]string
 
 var secretKeyFilename = ".secret_key"
-var hotkeyKeyRe *regexp.Regexp = regexp.MustCompile("^((ctrl|alt|meta)\\+)?([a-z0-9/?]|enter|tab|arrow(up|down|right|left))$")
+var hotkeyKeyRe *regexp.Regexp = regexp.MustCompile(`^((ctrl|alt|meta)\+)?([a-z0-9/?]|enter|tab|arrow(up|down|right|left))$`)
 var hotkeyActions = []string{
 	"select_previous_result",
 	"select_next_result",
@@ -189,9 +189,7 @@ func parseConfig(rawConfig []byte) (*Config, error) {
 		if err != nil || pu.Scheme == "" || pu.Host == "" {
 			return nil, errors.New("invalid Server.BaseURL - use 'https://domain.tld/xy/' format")
 		}
-		if strings.HasSuffix(c.Server.BaseURL, "/") {
-			c.Server.BaseURL = c.Server.BaseURL[:len(c.Server.BaseURL)-1]
-		}
+		c.Server.BaseURL = strings.TrimSuffix(c.Server.BaseURL, "/")
 	}
 	return c, nil
 }
@@ -254,7 +252,7 @@ func (c *Config) init() error {
 	if err != nil {
 		c.secretKey = []byte(rand.Text() + rand.Text())
 		if err := os.WriteFile(sPath, c.secretKey, 0644); err != nil {
-			return fmt.Errorf("Failed to create secret key file: %w", err)
+			return fmt.Errorf("failed to create secret key file: %w", err)
 		}
 	} else {
 		c.secretKey = b

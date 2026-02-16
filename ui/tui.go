@@ -94,11 +94,7 @@ func (e singleLineEditor) deleteWord(v *gocui.View) {
 	}
 
 	ox, _ := v.Origin()
-	pos := ox + cx
-
-	if pos > len(line) {
-		pos = len(line)
-	}
+	pos := min(ox+cx, len(line))
 
 	start := pos - 1
 	for start > 0 && line[start] == ' ' {

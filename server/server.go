@@ -408,7 +408,6 @@ func serveAdd(c *webContext) {
 		return
 	}
 	c.Render("add", nil)
-	return
 }
 
 func serveHistory(c *webContext) {
@@ -475,7 +474,6 @@ func serveRules(c *webContext) {
 	c.Render("rules", tArgs{
 		"Success": "Rules saved",
 	})
-	return
 }
 
 func serveReadable(c *webContext) {
@@ -500,18 +498,15 @@ func serveReadable(c *webContext) {
 
 func serveHelp(c *webContext) {
 	c.Render("help", nil)
-	return
 }
 
 func serveAbout(c *webContext) {
 	c.Render("about", nil)
-	return
 }
 
 func serveOpensearch(c *webContext) {
 	c.Response.Header().Add("Content-Type", "application/xml")
 	c.Render("opensearch", nil)
-	return
 }
 
 func serveAddAlias(c *webContext) {
