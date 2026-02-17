@@ -495,6 +495,10 @@ func (h Hotkeys) Validate() error {
 }
 
 func (h Hotkeys) ToJSON() template.JS {
+	if h.Web == nil {
+		b, _ := json.Marshal(map[string]string{})
+		return template.JS(b)
+	}
 	b, err := json.Marshal(h.Web)
 	if err != nil {
 		return template.JS("")
