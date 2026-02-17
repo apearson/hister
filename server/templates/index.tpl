@@ -1,8 +1,8 @@
 {{ define "main" }}
 <div class="sticky">
     <div class="search text-center">
-        <input type="text" autofocus id="search" />
-        <input type="text" disabled id="autocomplete" value="Search..."/>
+        <input type="text" autofocus id="search" placeholder="Search..." />
+        <input type="text" disabled id="autocomplete"/>
         <div id="ws-status" class="ws-status" title="Websocket disconnected"></div>
     </div>
 </div>
