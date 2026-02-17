@@ -490,9 +490,14 @@ window.addEventListener("keydown", function(e) {
     } else if(e.metaKey) {
         modifier = "meta";
     }
-    let key = e.key.toLowerCase();
-    if(modifier) {
-        key = modifier + "+" + key;
+    let key;
+    if(modifier && e.code?.startsWith("Key")) {
+        key = modifier + "+" + e.code.replace("Key", "").toLowerCase();
+    } else {
+        key = e.key.toLowerCase();
+        if(modifier) {
+            key = modifier + "+" + key;
+        }
     }
     if(hotkeys[key]) {
         hotkeyActions[hotkeys[key]](e);
