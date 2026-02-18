@@ -264,8 +264,7 @@ func serveIndex(c *webContext) {
 		// Prefix takes precedence over suffix, so "!! query !!" will be treated as "query !!"
 		if strings.HasPrefix(query, "!!") {
 			query = query[2:]
-		}
-		else if strings.HasSuffix(query, "!!") {
+		} else if strings.HasSuffix(query, "!!") {
 			query = query[:len(query)-2]
 		}
 		c.Redirect(strings.Replace(c.Config.App.SearchURL, "{query}", strings.TrimSpace(query), 1))

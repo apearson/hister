@@ -592,8 +592,12 @@ function viewResultPopup(e) {
 }
 
 function openSelectedResult(e, newWindow) {
-    if(input.value.startsWith("!!")) {
-        openUrl(getSearchUrl(input.value.substring(2)), newWindow);
+    const query = input.value.trim();
+    if(query.startsWith("!!")) {
+        openUrl(getSearchUrl(query.substring(2)), newWindow);
+        return;
+    } else if (query.endsWith("!!")) {
+        openUrl(getSearchUrl(query.substring(0, query.length - 2)), newWindow);
         return;
     }
     e.preventDefault();
