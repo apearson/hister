@@ -257,9 +257,18 @@ func withLogging(h http.Handler) http.Handler {
 }
 
 func serveIndex(c *webContext) {
-	q := c.Request.URL.Query().Get("q")
-	if strings.HasPrefix(q, "!!") {
-		c.Redirect(strings.Replace(c.Config.App.SearchURL, "{query}", q[2:], 1))
+	q := strings.TrimSpace(c.Request.URL.Query().Get("q"))
+	if strings.HasPrefix(q, "!!") || strings.HasSuffix(q, "!!") {
+		query := q
+
+		// Prefix takes precedence over suffix, so "!! query !!" will be treated as "query !!"
+		if strings.HasPrefix(query, "!!") {
+			query = query[2:]
+		}
+		else if strings.HasSuffix(query, "!!") {
+			query = query[:len(query)-2]
+		}
+		c.Redirect(strings.Replace(c.Config.App.SearchURL, "{query}", strings.TrimSpace(query), 1))
 		return
 	}
 	if q != "" {
